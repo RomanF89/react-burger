@@ -8,6 +8,7 @@ import Modal from '../Modal/Modal';
 const modalRoot = document.querySelector('#modal_container')
 
 
+
 function ModalOverlay({ isOpen, type, data, closeModals }) {
 
   function handleClick(e) {
