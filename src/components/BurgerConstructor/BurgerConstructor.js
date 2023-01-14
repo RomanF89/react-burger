@@ -2,19 +2,34 @@ import { ConstructorElement, DragIcon, CurrencyIcon, Button } from '@ya.praktiku
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './BurgerConstructor.module.css';
+import Modal from '../Modal/Modal';
+import IngredientDetails from '../IngredientDetails/IngredientDetails';
+import OrderDetails from '../OrderDetails/OrderDetails';
+import burgerDataPropTypes from '../../types/types';
 
 
-function BurgerConstructor({data, handleIngredientClick, handleOrderClick}) {
+function BurgerConstructor({data}) {
   const filteredItemsBun = data.filter((filteredItem) => filteredItem.type === 'bun');
   const otherBurgerItems = data.filter((filteredItem) => filteredItem.type === 'main' || filteredItem.type === 'sauce');
-  const [currentPrice, setCurrentPrice] = React.useState(0);
 
-  function ingredientClick (itemData) {
-    handleIngredientClick(itemData);
-  }
+  const [currentPrice, setCurrentPrice] = React.useState(0);
+  const [modalType, setModalType] = React.useState('');
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [modalData, setModalData] = React.useState({});
 
   function OrderClick () {
-    handleOrderClick();
+    setIsModalOpen(true);
+    setModalType('order');
+  }
+
+  function handleClick(item) {
+    setIsModalOpen(true);
+    setModalData(item);
+    setModalType('ingredient');
+  }
+
+  function handleClose () {
+    setIsModalOpen(false);
   }
 
   React.useEffect(() => {
@@ -26,7 +41,7 @@ function BurgerConstructor({data, handleIngredientClick, handleOrderClick}) {
   return (
     <section className={styles.burger_constructor}>
       <div className={styles.constructor_ingredients}>
-        <div className={styles.top_component} onClick={()=> ingredientClick(filteredItemsBun[0])}>
+        <div className={styles.top_component} onClick={()=> handleClick(filteredItemsBun[0])}>
           <ConstructorElement
             type={filteredItemsBun[0].type}
             isLocked={true}
@@ -39,7 +54,7 @@ function BurgerConstructor({data, handleIngredientClick, handleOrderClick}) {
 
         <div className={styles.variable_components}>
           {otherBurgerItems.map((item) =>
-            <div className={styles.variable_component} key={item._id} onClick={()=> ingredientClick(item)}>
+            <div className={styles.variable_component} key={item._id} onClick={()=> handleClick(item)}>
               <div className={styles.icon} >
                 <DragIcon></DragIcon>
               </div>
@@ -54,7 +69,7 @@ function BurgerConstructor({data, handleIngredientClick, handleOrderClick}) {
           )}
         </div>
 
-        <div className={styles.bottom_component} onClick={()=> ingredientClick(filteredItemsBun[1])}>
+        <div className={styles.bottom_component} onClick={()=> handleClick(filteredItemsBun[1])}>
           <ConstructorElement
             type={filteredItemsBun[1].type}
             isLocked={true}
@@ -75,12 +90,15 @@ function BurgerConstructor({data, handleIngredientClick, handleOrderClick}) {
           Оформить заказ
         </Button>
       </div>
+    <Modal isOpen={isModalOpen} handleClose={handleClose}>
+      { modalType === 'ingredient' ? <IngredientDetails data={modalData}></IngredientDetails> : <OrderDetails></OrderDetails> }
+    </Modal>
     </section>
   )
 }
 
 BurgerConstructor.propTypes = {
-  data: PropTypes.array,
+  data: PropTypes.arrayOf(burgerDataPropTypes),
   handleIngredientClick: PropTypes.func,
   handleOrderClick: PropTypes.func,
 }

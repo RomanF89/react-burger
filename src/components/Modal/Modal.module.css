@@ -1,12 +1,14 @@
 .modal {
+  display: flex;
+  position: relative;
   width: 720px;
   min-height: 538px;
   background-color: rgba(28, 28, 33, 1);
   border-radius: 40px;
-  display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative;
+  visibility: hidden;
+  z-index: 3;
 }
 
 .close_icon {
@@ -19,4 +21,17 @@
   right: 43px;
   top: 63px;
   padding: 0;
+}
+
+.modal_opened {
+  display: flex;
+  position:relative;
+  width: 720px;
+  min-height: 538px;
+  background-color: rgba(28, 28, 33, 1);
+  border-radius: 40px;
+  flex-direction: column;
+  align-items: center;
+  visibility: visible;
+  z-index: 3;
 }

@@ -10,6 +10,7 @@ function Card({ item, handleIngredientClick }) {
   }
 
   return (
+    <>
     <article className={styles.card} onClick={()=> handleClick(item)}>
       <Counter count={1} size="small" />
       <img className={styles.image} src={item.image} alt='Картинка'></img>
@@ -19,12 +20,13 @@ function Card({ item, handleIngredientClick }) {
       </div>
       <h3 className={styles.card_name}>{item.name}</h3>
     </article>
+    </>
   )
 }
 
 
 Card.propTypes = {
-  item: burgerDataPropTypes,
+  item: burgerDataPropTypes.isRequired,
   handleIngredientClick: PropTypes.func,
 }
 
