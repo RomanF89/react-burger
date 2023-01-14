@@ -1,0 +1,49 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  width: 272px;
+  height: 208px;
+  position: relative;
+  align-items: center;
+}
+
+.card:nth-child(odd) {
+  margin: 0 24px 0 0;
+}
+
+.image {
+  width: 240px;
+  height: 120px;
+
+}
+
+.price_area {
+  display: flex;
+  flex-direction: row;
+  min-width: 62px;
+  height: 24px;
+  font-size: 28px;
+  line-height: 24px;
+  font-weight: 400;
+  color: rgba(242, 242, 243, 1);
+  padding: 8px 0 8px 0;
+}
+
+.price {
+  margin: 0;
+  padding: 0 9px 0 0;
+}
+
+.card_name {
+  margin: 0;
+  display: flex;
+  width: 272px;
+  height: 48px;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+  color: rgba(242, 242, 243, 1);
+  align-items: flex-start;
+  justify-content: center;
+  text-align: center;
+}

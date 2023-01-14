@@ -1,0 +1,37 @@
+.modal {
+  display: flex;
+  position: relative;
+  width: 720px;
+  min-height: 538px;
+  background-color: rgba(28, 28, 33, 1);
+  border-radius: 40px;
+  flex-direction: column;
+  align-items: center;
+  visibility: hidden;
+  z-index: 3;
+}
+
+.close_icon {
+  display: flex;
+  background-color: transparent;
+  border: none;
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  right: 43px;
+  top: 63px;
+  padding: 0;
+}
+
+.modal_opened {
+  display: flex;
+  position:relative;
+  width: 720px;
+  min-height: 538px;
+  background-color: rgba(28, 28, 33, 1);
+  border-radius: 40px;
+  flex-direction: column;
+  align-items: center;
+  visibility: visible;
+  z-index: 3;
+}

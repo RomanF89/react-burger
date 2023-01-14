@@ -1,0 +1,84 @@
+.burger_constructor {
+  display: flex;
+  flex-direction: column;
+  margin: 100px 0 0 40px;
+  width: 100%;
+  max-width: 600px;
+  max-height: 760px;
+}
+
+.constructor_ingredients {
+  display: flex;
+  flex-direction: column;
+}
+
+.top_component {
+  margin: 0 0 0 32px;
+}
+
+.variable_components {
+  display: flex;
+  flex-direction: column;
+  height: 464px;
+  overflow-y: scroll;
+  margin: 16px 0 16px 0;
+}
+
+.variable_component {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 16px 0 0 0;
+}
+
+.icon {
+  margin: 0 8px 0 0;
+}
+
+
+.variable_component:last-child {
+  margin: 16px 0 0 0;
+}
+
+.variable_component:first-child {
+  margin: 0 0 0 0;
+}
+
+.variable_components::-webkit-scrollbar {
+  width: 8px;
+  background: rgba(47, 47, 55, 1);
+}
+
+.variable_components::-webkit-scrollbar-thumb {
+  width: 8px;
+  background: rgba(133, 133, 173, 1);
+}
+
+.bottom_component {
+  margin: 0 0 0 32px;
+}
+
+.order_price {
+  display: flex;
+  align-items: center;
+  font-size: 48px;
+  line-height: 36px;
+  font-weight: 400;
+  color: rgba(242, 242, 243, 1);
+  margin: 0 9.5px 0 0;
+}
+
+.order_field {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  margin: 40px 8px 0 0;
+}
+
+.currency_icon {
+  display: flex;
+  transform: scale(1.375, 1.375);
+  transform-origin: left;
+  margin-right: 58px;
+}
