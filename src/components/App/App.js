@@ -5,11 +5,12 @@ import Main from '../Main/Main';
 import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
 import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
 import { api } from '../../utils/Api';
-
+import { AppContext } from '../../utils/AppContext';
 
 function App() {
   const [data, setData] = React.useState('');
   const [error, setError] = React.useState('');
+  const [orderData, setOrderData] = React.useState({});
 
   const getData = () => {
     api.getData()
@@ -26,13 +27,14 @@ function App() {
   }, []);
 
   return (
-    //Проверка на data и modalOptions делается из-за ошибок в консоли при первом рендере, когда значения = undefined
     <div className={styles.app}>
       <AppHeader></AppHeader>
       {data &&
         <Main>
           <BurgerIngredients data={data}></BurgerIngredients>
-          <BurgerConstructor data={data}></BurgerConstructor>
+          <AppContext.Provider value={{data, orderData, setOrderData, setError}}>
+            <BurgerConstructor/>
+          </AppContext.Provider>
         </Main>
       }
     </div>

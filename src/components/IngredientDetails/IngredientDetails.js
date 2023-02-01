@@ -1,6 +1,6 @@
 import styles from './IngredientDetails.module.css';
 import PropTypes from 'prop-types';
-import burgerDataPropTypes from '../../types/types';
+import { burgerDataPropTypes } from '../../types/types';
 
 function IngredientDetails ({data}) {
 

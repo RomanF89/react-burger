@@ -2,7 +2,6 @@
   display: flex;
   position: relative;
   width: 720px;
-  min-height: 538px;
   background-color: rgba(28, 28, 33, 1);
   border-radius: 40px;
   flex-direction: column;
@@ -27,7 +26,6 @@
   display: flex;
   position:relative;
   width: 720px;
-  min-height: 538px;
   background-color: rgba(28, 28, 33, 1);
   border-radius: 40px;
   flex-direction: column;

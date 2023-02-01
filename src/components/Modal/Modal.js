@@ -1,7 +1,7 @@
 import styles from './Modal.module.css';
 import React from 'react';
 import PropTypes from 'prop-types';
-import burgerDataPropTypes from '../../types/types';
+import { burgerDataPropTypes } from '../../types/types';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import ReactDOM from 'react-dom';
 import ModalOverlay from '../ModalOverlay/ModalOverlay';

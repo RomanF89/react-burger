@@ -5,7 +5,7 @@ import Card from '../Card/Card';
 import Modal from '../Modal/Modal';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import React from 'react';
-import burgerDataPropTypes from '../../types/types';
+import { burgerDataPropTypes } from '../../types/types';
 
 
 
