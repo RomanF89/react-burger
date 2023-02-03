@@ -5,12 +5,12 @@ import Main from '../Main/Main';
 import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
 import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
 import { api } from '../../utils/Api';
-import { AppContext } from '../../utils/AppContext';
+import { AppContext } from '../../services/AppContext';
 
 function App() {
-  const [data, setData] = React.useState('');
+  const [data, setData] = React.useState([]);
   const [error, setError] = React.useState('');
-  const [orderData, setOrderData] = React.useState({});
+  const [orderData, setOrderData] = React.useState(null);
 
   const getData = () => {
     api.getData()
@@ -29,10 +29,10 @@ function App() {
   return (
     <div className={styles.app}>
       <AppHeader></AppHeader>
-      {data &&
+      { data.length &&
         <Main>
-          <BurgerIngredients data={data}></BurgerIngredients>
           <AppContext.Provider value={{data, orderData, setOrderData, setError}}>
+            <BurgerIngredients/>
             <BurgerConstructor/>
           </AppContext.Provider>
         </Main>
