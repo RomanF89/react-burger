@@ -19,6 +19,16 @@ class Api {
       })
       .then(this._checkResponse)
   }
+
+  createOrder(ingredients) {
+    return fetch(
+      `${this._baseUrl}/api/orders`, {
+        body: JSON.stringify({ingredients}),
+        headers: this._headers,
+        method: "POST",
+    })
+    .then(this._checkResponse)
+  }
 }
 
 const api = new Api({

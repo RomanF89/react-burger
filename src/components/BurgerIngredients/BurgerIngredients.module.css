@@ -21,6 +21,10 @@
   padding: 20px 0 0 0;
 }
 
+.tab_link {
+  text-decoration: none;
+}
+
 .ingredients_title {
   margin: 40px 0 0 0;
   padding: 0 0 24px 0;
@@ -36,6 +40,7 @@
   max-height: 716px;
   overflow-y: scroll;
   margin: 40px 0 0 0;
+  scroll-behavior: smooth;
 }
 
 .ingredients_column {

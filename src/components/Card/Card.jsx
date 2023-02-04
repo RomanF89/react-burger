@@ -1,6 +1,6 @@
 import styles from './Card.module.css';
 import PropTypes from 'prop-types';
-import burgerDataPropTypes from '../../types/types';
+import { burgerDataPropTypes } from '../../types/types';
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 
 function Card({ item, handleIngredientClick }) {
