@@ -25,7 +25,6 @@ function BurgerIngredients() {
     setIsModalOpen(false);
   }
 
-  //onClick={(e) => e.target.scrollIntoView()}
   return (
     <section className={styles.burger_ingredients}>
       <h2 className={styles.title}>Соберите Бургер</h2>
@@ -60,9 +59,9 @@ function BurgerIngredients() {
           )}
         </div>
       </div>
-      <Modal isOpen={isModalOpen} handleClose={handleClose}>
-        {isModalOpen && <IngredientDetails data={modalData} />}
-      </Modal>
+        {isModalOpen &&  <Modal handleClose={handleClose}>
+         <IngredientDetails data={modalData} />
+      </Modal>}
     </section>
   )
 }

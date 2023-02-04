@@ -2,10 +2,10 @@ import React from 'react';
 import styles from './ModalOverlay.module.css';
 import PropTypes from 'prop-types';
 
-function ModalOverlay({ isOpen, children }) {
+function ModalOverlay({ children }) {
 
   return (
-    <section className={isOpen ? styles.modal_opened : styles.modal_overlay} >
+    <section className={styles.modal_opened} >
       {children}
     </section>
   )

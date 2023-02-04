@@ -113,9 +113,15 @@ function BurgerConstructor() {
           Оформить заказ
         </Button>
       </div>
-      <Modal isOpen={isModalOpen} handleClose={handleClose}>
-        {isModalOpen && modalType === 'ingredient' ? <IngredientDetails data={modalData} /> : (isModalOpen && <OrderDetails orderData={orderData} />)}
-      </Modal>
+        {isModalOpen && (
+          <Modal handleClose={handleClose}>
+            {modalType === "ingredient" ? (
+              <IngredientDetails data={modalData} />
+            ) : (
+              <OrderDetails orderData={orderData} />
+            )}
+          </Modal>
+        )}
     </section>
   )
 }
