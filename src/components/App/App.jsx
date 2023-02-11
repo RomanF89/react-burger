@@ -4,37 +4,35 @@ import AppHeader from '../AppHeader/AppHeader';
 import Main from '../Main/Main';
 import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
 import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
-import { api } from '../../utils/Api';
-import { AppContext } from '../../services/AppContext';
+import { getIngredients } from '../../services/actions/burgerIngredients';
+import { useSelector, useDispatch } from 'react-redux';
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+
+
 
 function App() {
-  const [data, setData] = React.useState([]);
-  const [error, setError] = React.useState('');
-  const [orderData, setOrderData] = React.useState(null);
 
-  const getData = () => {
-    api.getData()
-      .then((res) => {
-        setData(res.data)
-      })
-      .catch((err) => {
-        setError(err)
-      })
-  }
+  const [error, setError] = React.useState('');
+  const dispatch = useDispatch();
+
+  const { data } = useSelector(store => ({
+    data: store.ingredients.ingredientsFromRequest
+  }));
 
   React.useEffect(() => {
-    getData();
+    dispatch(getIngredients());
   }, []);
 
   return (
     <div className={styles.app}>
       <AppHeader></AppHeader>
-      { data.length &&
+      {data.length &&
         <Main>
-          <AppContext.Provider value={{data, orderData, setOrderData, setError}}>
-            <BurgerIngredients/>
-            <BurgerConstructor/>
-          </AppContext.Provider>
+          <DndProvider backend={HTML5Backend}>
+            <BurgerIngredients data={data} />
+            <BurgerConstructor data={data} setError={setError} />
+          </DndProvider>
         </Main>
       }
     </div>

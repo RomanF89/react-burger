@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { burgerDataPropTypes } from '../../types/types';
 
 function IngredientDetails ({data}) {
-
   return(
     <div className={styles.ingredient_details}>
       <h3 className={styles.title}>Детали ингредиента</h3>

@@ -1,8 +1,15 @@
 import styles from './OrderDetails.module.css';
 import orderImagePath from '../../images/orderAccepted.svg';
 import { orderDataPropsTypes } from '../../types/types';
+import { useSelector } from 'react-redux';
 
-function OrderDetails({orderData}) {
+
+
+function OrderDetails() {
+
+  const { orderData}  = useSelector( store => ({
+    orderData: store.orderDetails.currentOrder,
+}))
   return (
     <section className={styles.order_details}>
       <span className={styles.order_number}>{orderData.success ? orderData.order.number : '' }</span>
@@ -15,7 +22,7 @@ function OrderDetails({orderData}) {
 }
 
 OrderDetails.propTypes = {
-  orderData: (orderDataPropsTypes).isRequired,
+  orderData: (orderDataPropsTypes),
 }
 
 export default OrderDetails;
