@@ -12,8 +12,6 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 
 
 function App() {
-
-  const [error, setError] = React.useState('');
   const dispatch = useDispatch();
 
   const { data } = useSelector(store => ({
@@ -31,7 +29,7 @@ function App() {
         <Main>
           <DndProvider backend={HTML5Backend}>
             <BurgerIngredients data={data} />
-            <BurgerConstructor data={data} setError={setError} />
+            <BurgerConstructor data={data}  />
           </DndProvider>
         </Main>
       }

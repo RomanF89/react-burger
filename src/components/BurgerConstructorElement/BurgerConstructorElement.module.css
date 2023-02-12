@@ -4,3 +4,15 @@
   align-items: center;
   margin: 16px 0 0 0;
 }
+
+.empty_element {
+  display: flex;
+  flex-direction: row;
+  border: solid 1px aqua;
+  border-radius: 40px;
+  align-items: center;
+  background-color: inherit;
+  width: 431px;
+  height: 104px;
+  margin: 16px 0 0 0;
+}

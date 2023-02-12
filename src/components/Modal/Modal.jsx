@@ -5,21 +5,26 @@ import { burgerDataPropTypes } from '../../types/types';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import ReactDOM from 'react-dom';
 import ModalOverlay from '../ModalOverlay/ModalOverlay';
+import { deleteIngredientDetails } from '../../services/actions/ingredientDetails';
+import { deleteOrder } from '../../services/actions/orderDetails';
+import { useDispatch } from 'react-redux';
 
 
 const modalRoot = document.querySelector('#modal_container')
 
 
-function Modal({children, handleClose }) {
+function Modal({ children }) {
+  const dispatch = useDispatch();
 
   function handleModalClose() {
-    handleClose();
+    dispatch(deleteOrder());
+    dispatch(deleteIngredientDetails());
   }
 
   const hanldleEscClose = (e) => {
-      if (e.code === "Escape") {
-        handleModalClose();
-      }
+    if (e.code === "Escape") {
+      handleModalClose();
+    }
   }
 
   React.useEffect(() => {
@@ -27,12 +32,12 @@ function Modal({children, handleClose }) {
     return () => {
       document.removeEventListener('keydown', hanldleEscClose);
     }
-}, [])
+  }, [])
 
   return ReactDOM.createPortal(
     <div onClick={() => { handleModalClose() }}>
       <ModalOverlay >
-        <div className={styles.modal_opened } onClick={(e) => e.stopPropagation()}>
+        <div className={styles.modal_opened} onClick={(e) => e.stopPropagation()}>
           <button className={styles.close_icon} onClick={handleModalClose}>
             <CloseIcon></CloseIcon>
           </button>

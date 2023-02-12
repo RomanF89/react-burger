@@ -6,7 +6,6 @@ import { useSelector } from 'react-redux';
 
 
 function OrderDetails() {
-
   const { orderData}  = useSelector( store => ({
     orderData: store.orderDetails.currentOrder,
 }))

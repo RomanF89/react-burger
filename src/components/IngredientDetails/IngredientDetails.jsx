@@ -1,8 +1,13 @@
 import styles from './IngredientDetails.module.css';
 import PropTypes from 'prop-types';
 import { burgerDataPropTypes } from '../../types/types';
+import { useSelector } from 'react-redux';
 
-function IngredientDetails ({data}) {
+function IngredientDetails () {
+  const { data } = useSelector(store => ({
+    data: store.ingredientDetails.currentIngredientDetails
+  }));
+
   return(
     <div className={styles.ingredient_details}>
       <h3 className={styles.title}>Детали ингредиента</h3>

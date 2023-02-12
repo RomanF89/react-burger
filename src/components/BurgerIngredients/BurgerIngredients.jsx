@@ -2,46 +2,42 @@ import styles from './BurgerIngredients.module.css';
 import PropTypes from 'prop-types';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import Card from '../Card/Card';
-import Modal from '../Modal/Modal';
-import IngredientDetails from '../IngredientDetails/IngredientDetails';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { burgerDataPropTypes } from '../../types/types';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { getIngredientDetails } from '../../services/actions/ingredientDetails';
 
 
 function BurgerIngredients({ data }) {
-  const [isModalOpen, setIsModalOpen] = React.useState(false);
-  const [activeTab, setActiveTab] = useState('buns')
-  const ingredientsRef = useRef()
+  const [activeTab, setActiveTab] = useState('buns');
+  const ingredientsRef = useRef();
   const sauceRef = useRef();
   const mainRef = useRef();
   const bunRef = useRef();
 
-  const { ingredientDetails } = useSelector(store => ({
-    ingredientDetails: store.ingredientDetails.currentIngredientDetails
-  }));
+  const buns = useMemo(() => data.filter((filteredItem) => filteredItem.type === 'bun'), [data]);
+  const mains = useMemo(() => data.filter((filteredItem) => filteredItem.type === 'main'), [data])
+  const sauces = useMemo(() => data.filter((filteredItem) => filteredItem.type === 'sauce'), [data])
 
   const dispatch = useDispatch();
 
   function handleClick(item) {
-    setIsModalOpen(true);
     dispatch(getIngredientDetails(item));
   }
 
-  function handleClose() {
-    setIsModalOpen(false);
+  const setTabListener = () => {
+     //Значение Таб изменяемое при скролле
+     let activeTabName = listenRefs(ingredientsRef, bunRef, sauceRef, mainRef);
+     setActiveTab(activeTabName);
   }
 
   useEffect(() => {
-    ingredientsRef.current.addEventListener("scroll", () => { //Значение Таб изменяемое при скролле
-      let activeTabName = listenRefs(ingredientsRef, bunRef, sauceRef, mainRef);
-      setActiveTab(activeTabName);
+    ingredientsRef.current.addEventListener("scroll", () => {
+      setTabListener();
     })
     return () => {
       ingredientsRef.current.removeEventListener("scroll", () => {
-        let activeTabName = listenRefs(ingredientsRef, bunRef, sauceRef, mainRef);
-        setActiveTab(activeTabName);
+        setTabListener();
       })
     }
   }, [])
@@ -77,26 +73,23 @@ function BurgerIngredients({ data }) {
       <div className={styles.ingredients} ref={ingredientsRef} onScroll={(e) => { }}>
         <h3 ref={bunRef} id={'buns'} className={styles.ingredients_title}>Булки</h3>
         <div className={styles.ingredients_column}>
-          {data.filter((filteredItem) => filteredItem.type === 'bun').map((item) =>
+          {buns.map((item) =>
             <Card item={item} key={item._id} handleIngredientClick={handleClick} />
           )}
         </div>
         <h3 ref={sauceRef} id={'sauces'} className={styles.ingredients_title}  >Соусы</h3>
         <div className={styles.ingredients_column}>
-          {data.filter((filteredItem) => filteredItem.type === 'sauce').map((item) =>
+          {sauces.map((item) =>
             <Card item={item} key={item._id} handleIngredientClick={handleClick} />
           )}
         </div>
         <h3 ref={mainRef} id={'main'} className={styles.ingredients_title}>Начинки</h3>
         <div className={styles.ingredients_column}>
-          {data.filter((filteredItem) => filteredItem.type === 'main').map((item) =>
+          {mains.map((item) =>
             <Card item={item} key={item._id} handleIngredientClick={handleClick} />
           )}
         </div>
       </div>
-      {isModalOpen && <Modal handleClose={handleClose}>
-        <IngredientDetails data={ingredientDetails} />
-      </Modal>}
     </section>
   )
 }

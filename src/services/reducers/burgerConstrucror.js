@@ -8,15 +8,17 @@ const initialStateConstructor = {
   constructorIngredients: [],
 }
 
+const bun = 'bun';
+
 export const ingredientsReducer = (state = initialStateConstructor, action) => {
   switch (action.type) {
     case DROP_INGREDIENTS: {
-      if (action.ingredient.type === 'bun') { //Проверяем тип ингредиента на bun
+      if (action.ingredient.type === bun) { //Проверяем тип ингредиента на bun
         if (state.constructorIngredients.find((item) => item._id === action.ingredient._id)) { //Проверяем не свопадают ли типы булок
           return state
         } else {
           return { // Меняем булки в массиве
-            ...state, constructorIngredients: state.constructorIngredients.filter((item) => item.type !== 'bun').concat(action.ingredient)
+            ...state, constructorIngredients: state.constructorIngredients.filter((item) => item.type !== bun).concat(action.ingredient)
           }
         }
       } else {
