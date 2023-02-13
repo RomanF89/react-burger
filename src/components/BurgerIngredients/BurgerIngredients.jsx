@@ -32,13 +32,9 @@ function BurgerIngredients({ data }) {
   }
 
   useEffect(() => {
-    ingredientsRef.current.addEventListener("scroll", () => {
-      setTabListener();
-    })
+    ingredientsRef.current.addEventListener("scroll", setTabListener);
     return () => {
-      ingredientsRef.current.removeEventListener("scroll", () => {
-        setTabListener();
-      })
+      ingredientsRef.current.removeEventListener("scroll",setTabListener);
     }
   }, [])
 
