@@ -1,28 +1,36 @@
-import { ConstructorElement, DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import React from 'react';
-import { useContext } from 'react';
+import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import styles from './BurgerConstructor.module.css';
-import Modal from '../Modal/Modal';
-import IngredientDetails from '../IngredientDetails/IngredientDetails';
-import OrderDetails from '../OrderDetails/OrderDetails';
 import { burgerDataPropTypes } from '../../types/types';
-import { AppContext } from '../../services/AppContext';
 import { api } from '../../utils/Api';
+import { useSelector, useDispatch } from 'react-redux';
+import { getIngredientDetails } from '../../services/actions/ingredientDetails';
+import { getOrder, getOrderSuccess, saveOrderError } from '../../services/actions/orderDetails';
+import { dropIngredients, deleteIngredient } from '../../services/actions/burgerConstructor';
+import { useDrop } from 'react-dnd';
+import { BurgerConstructorElement } from '../BurgerConstructorElement/BurgerConstructorElement';
 
 
 function BurgerConstructor() {
-  const { data, setError, setOrderData, orderData } = useContext(AppContext);
-  const filteredItemsBun = React.useMemo(() => data.filter((filteredItem) => filteredItem.type === 'bun'), [data]);
-  const otherBurgerItems = React.useMemo(() => data.filter((filteredItem) => filteredItem.type === 'main' || filteredItem.type === 'sauce'), [data]);
+  const { data } = useSelector(store => ({
+    data: store.constructorIngredients.constructorIngredients
+  }));
 
-  const [currentPrice, setCurrentPrice] = React.useState(0);
-  const [modalType, setModalType] = React.useState('');
-  const [isModalOpen, setIsModalOpen] = React.useState(false);
-  const [modalData, setModalData] = React.useState(null);
+  const filteredItemsBun = useMemo(() => data.filter((filteredItem) => filteredItem.type === 'bun'), [data]);
+  const otherBurgerItems = useMemo(() => data.filter((filteredItem) => filteredItem.type === 'main' || filteredItem.type === 'sauce'), [data]);
+
+  const dispatch = useDispatch();
+
+  const [, dropRef] = useDrop({
+    accept: 'card',
+    drop(dropIngredient) {
+      dispatch(dropIngredients(dropIngredient))
+    },
+  });
 
   function orderClick() {
-    const getBurgersId = () => {
+    const getBurgersId = () => { //Сортировка id бургеров, чтоб булки были вначале и вконце массива
       const ingredientsFromData = data.reduce((prevItem, nextItem) => {
         return [...prevItem, nextItem._id];
       }, []);
@@ -31,81 +39,82 @@ function BurgerConstructor() {
     }
     const burgersId = getBurgersId();
 
+    dispatch(getOrder())
     api.createOrder(burgersId)
-      .then((orderData) => {
-        setOrderData(orderData)
+      .then(orderData => {
+        dispatch(getOrderSuccess(orderData))
       })
-      .then(() => {
-        setIsModalOpen(true)
-        setModalType('order')
+      .catch((err) => {
+        dispatch(saveOrderError(err))
       })
-      .catch((err) =>
-        setError(err))
   }
 
   function handleClick(item) {
-    setIsModalOpen(true);
-    setModalData(item);
-    setModalType('ingredient');
+    dispatch(getIngredientDetails(item));
   }
 
-  function handleClose() {
-    setIsModalOpen(false);
+  function handleDeleteIngredient(ingredient) {
+    dispatch(deleteIngredient(ingredient))
   }
 
-  React.useEffect(() => {
-    const variableIngredientsPrice = otherBurgerItems.reduce(function (previousValue, value) {
+  // Общая цена ингредиентов
+  const allIngredientsPrice = React.useMemo(() => (filteredItemsBun.reduce(function (previousValue, value) {
+    return previousValue + value.price
+  }, 0) * 2) +
+    otherBurgerItems.reduce(function (previousValue, value) {
       return previousValue + value.price
-    }, 0);
-    const allIngredientsPrice = (variableIngredientsPrice + (filteredItemsBun[0].price * 2));
-    setCurrentPrice(allIngredientsPrice);
-  }, [otherBurgerItems, filteredItemsBun]);
+    }, 0)
+    , [otherBurgerItems, filteredItemsBun])
 
   return (
     <section className={styles.burger_constructor}>
-      <div className={styles.constructor_ingredients}>
-        <div className={styles.top_component} onClick={() => handleClick(filteredItemsBun[0])}>
-          <ConstructorElement
-            type={filteredItemsBun[0].type}
-            isLocked={true}
-            text={filteredItemsBun[0].name}
-            price={filteredItemsBun[0].price}
-            thumbnail={filteredItemsBun[0].image}
-            key={filteredItemsBun[0]._id}
-          />
-        </div>
+      <div className={styles.constructor_ingredients} ref={dropRef}>
 
-        <div className={styles.variable_components}>
-          {otherBurgerItems.map((item) =>
-            <div className={styles.variable_component} key={item._id} onClick={() => handleClick(item)}>
-              <div className={styles.icon} >
-                <DragIcon></DragIcon>
-              </div>
-              <ConstructorElement
-                type={item.type}
-                isLocked={false}
-                text={item.name}
-                price={item.price}
-                thumbnail={item.image}
-              />
-            </div>
-          )}
-        </div>
+        { //Рендер верхней Булки
+          filteredItemsBun.length ? <div className={styles.top_component} onClick={() => handleClick(filteredItemsBun[0])}>
+            <ConstructorElement
+              type={filteredItemsBun[0].type}
+              isLocked={true}
+              text={filteredItemsBun[0].name}
+              price={filteredItemsBun[0].price}
+              thumbnail={filteredItemsBun[0].image}
+              key={filteredItemsBun[0]._id}
+            />
+          </div> : ''
+        }
 
-        <div className={styles.bottom_component} onClick={() => handleClick(filteredItemsBun[0])}>
-          <ConstructorElement
-            type={filteredItemsBun[0].type}
-            isLocked={true}
-            text={filteredItemsBun[0].name}
-            price={filteredItemsBun[0].price}
-            thumbnail={filteredItemsBun[0].image}
-            key={filteredItemsBun[0]._id}
-          />
-        </div>
+        { //Рендер остальных ингредиентов
+          <div className={styles.variable_components}>
+            {
+              data.length ? data.map((item, index) =>
+                <BurgerConstructorElement
+                  index={index} item={item}
+                  key={item._id + Math.random()}
+                  ingredientClick={handleClick}
+                  handleDelete={handleDeleteIngredient}>
+                </BurgerConstructorElement>
+              ) : ''
+            }
+          </div>
+        }
+
+        { //Рендер нижней Булки
+          filteredItemsBun.length ? <div className={styles.bottom_component} onClick={() => handleClick(filteredItemsBun[0])}>
+            <ConstructorElement
+              type={filteredItemsBun[0].type}
+              isLocked={true}
+              text={filteredItemsBun[0].name}
+              price={filteredItemsBun[0].price}
+              thumbnail={filteredItemsBun[0].image}
+              key={filteredItemsBun[0]._id}
+            />
+          </div> : ''
+        }
+
       </div>
 
       <div className={styles.order_field}>
-        <span className={styles.order_price}>{currentPrice}</span>
+        <span className={styles.order_price}>{allIngredientsPrice}</span>
         <div className={styles.currency_icon}>
           <CurrencyIcon type="primary" />
         </div>
@@ -113,15 +122,6 @@ function BurgerConstructor() {
           Оформить заказ
         </Button>
       </div>
-        {isModalOpen && (
-          <Modal handleClose={handleClose}>
-            {modalType === "ingredient" ? (
-              <IngredientDetails data={modalData} />
-            ) : (
-              <OrderDetails orderData={orderData} />
-            )}
-          </Modal>
-        )}
     </section>
   )
 }
