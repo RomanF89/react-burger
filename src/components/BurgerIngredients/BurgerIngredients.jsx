@@ -4,8 +4,7 @@ import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import Card from '../Card/Card';
 import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { burgerDataPropTypes } from '../../types/types';
-import { useDispatch } from 'react-redux';
-import { getIngredientDetails } from '../../services/actions/ingredientDetails';
+import { useHistory } from 'react-router-dom';
 
 
 function BurgerIngredients({ data }) {
@@ -19,37 +18,38 @@ function BurgerIngredients({ data }) {
   const mains = useMemo(() => data.filter((filteredItem) => filteredItem.type === 'main'), [data])
   const sauces = useMemo(() => data.filter((filteredItem) => filteredItem.type === 'sauce'), [data])
 
-  const dispatch = useDispatch();
+  const history = useHistory();
 
   function handleClick(item) {
-    dispatch(getIngredientDetails(item));
+    history.replace(`/ingredients/${item._id}`, {modal: true})
   }
 
   const setTabListener = () => {
      //Значение Таб изменяемое при скролле
-     let activeTabName = listenRefs(ingredientsRef, bunRef, sauceRef, mainRef);
+    let activeTabName = listenRefs(ingredientsRef)(bunRef, sauceRef, mainRef);
      setActiveTab(activeTabName);
   }
 
   useEffect(() => {
     ingredientsRef.current.addEventListener("scroll", setTabListener);
-    return () => {
-      ingredientsRef.current.removeEventListener("scroll",setTabListener);
-    }
   }, [])
 
-  function listenRefs(parentRef, ...args) { //Аргументы надо задавать согласно очередности в табах
-    const activeTabRef = args.reduce(function (prevItem, nextItem) { //Выбор наиболее подходящего для активации таба
-      let currentTab;
-      if ((Math.abs(parentRef.current.getBoundingClientRect().top - nextItem.current.getBoundingClientRect().top))
-        < (parentRef.current.getBoundingClientRect().top - prevItem.current.getBoundingClientRect().top)) {
-        currentTab = nextItem;
-      } else {
-        currentTab = prevItem;
-      }
-      return currentTab;
-    })
-    return activeTabRef.current.id;
+
+  function listenRefs(parentRef) { // Реф от которого идет рассчет активного таба
+    return function (...args) { //Аргументы надо задавать согласно очередности в табах
+      const activeTabRef = args.reduce(function (prevItem, nextItem) { //Выбор наиболее подходящего для активации таба
+        let currentTab;
+        if ((Math.abs(parentRef.current.getBoundingClientRect().top - nextItem.current.getBoundingClientRect().top))
+          < (parentRef.current.getBoundingClientRect().top - prevItem.current.getBoundingClientRect().top)) {
+          currentTab = nextItem;
+        } else {
+          currentTab = prevItem;
+        }
+        return currentTab;
+      })
+      return activeTabRef.current.id;
+    }
+
   }
 
   return (
@@ -92,7 +92,6 @@ function BurgerIngredients({ data }) {
 
 BurgerIngredients.propTypes = {
   data: PropTypes.arrayOf(burgerDataPropTypes),
-  handleIngredientClick: PropTypes.func,
 }
 
 export default BurgerIngredients;

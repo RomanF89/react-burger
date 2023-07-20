@@ -20,6 +20,5 @@ export const burgerDataPropTypes = PropTypes.shape({
   order: PropTypes.shape({
     number: PropTypes.number.isRequired
   }),
-});
-
+})
 

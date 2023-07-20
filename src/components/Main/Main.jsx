@@ -9,9 +9,9 @@ function Main(props) {
     ingredientData: store.ingredientDetails.currentIngredientDetails
   }));
 
-  const { orderData}  = useSelector( store => ({
+  const { orderData } = useSelector(store => ({
     orderData: store.orderDetails.currentOrder,
-}))
+  }))
 
   return (
     <main className={styles.content}>

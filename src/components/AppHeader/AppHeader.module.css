@@ -43,12 +43,13 @@
 
 .link {
   text-decoration: none;
-  color: rgb(255, 255, 255);
+  color: rgba(133, 133, 173, 1);
   display: flex;
   flex-direction: row;
   align-items: center;
   margin: 0 49px 0 0;
 }
+
 
 .link:last-child {
   margin: 0;
@@ -57,7 +58,6 @@
 .profile_link {
   composes: link;
   margin: 0;
-  color: rgba(133, 133, 173, 1);
 }
 
 .icon_caption {
@@ -66,5 +66,5 @@
 
 .link_active {
   composes: link;
-  color: rgba(133, 133, 173, 1);
+  color: rgb(240, 240, 244);
 }
