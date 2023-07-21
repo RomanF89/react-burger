@@ -5,14 +5,11 @@ import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-component
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState, useCallback } from "react";
 import { updateUser, refreshToken, logoutUser } from "../services/actions/authorization";
-import { getCookie } from "../utils/getCookie";
 
 export function ProfilePage() {
 
   const history = useHistory();
   const dispatch = useDispatch();
-  const accessToken = getCookie('accessToken');
-  const refreshedToken = getCookie('refreshToken');
 
   const { data } = useSelector(store => ({
     data: store.authorization
@@ -20,12 +17,12 @@ export function ProfilePage() {
 
   const onUpdateUser = (e) => {
     e.preventDefault();
-    dispatch(updateUser(email, name, accessToken));
+    dispatch(updateUser(email, name));
   }
 
   const undoChanges = (e) => {
     e.preventDefault();
-    dispatch(updateUser(data.prevUserState.email, data.prevUserState.name, accessToken));
+    dispatch(updateUser(data.prevUserState.email, data.prevUserState.name));
 
   }
 
@@ -52,18 +49,19 @@ export function ProfilePage() {
 
   useEffect(() => {
     if (data.updateUserError === 'Ошибка 403') {
-      dispatch(refreshToken(refreshedToken, updateUser(email, name))); // При ошибке обновления данные в полях сбросятся к актуальным значениям.
+      dispatch(refreshToken(updateUser(email, name))); // При ошибке обновления данные в полях сбросятся к актуальным значениям.
+
     }
   }, [data.updateUserError]);
 
   const logoutClick = useCallback((e) => {
     e.preventDefault();
-    dispatch(logoutUser(refreshedToken));
+    dispatch(logoutUser());
     if (data.currentUser === null) {
       history.push('/login');
     }
 
-  }, [dispatch, history, refreshedToken, data])
+  }, [dispatch, history, data])
 
 
   return (

@@ -26,7 +26,10 @@ class Api {
     return fetch(
       `${this._baseUrl}/api/orders`, {
       body: JSON.stringify({ ingredients }),
-      headers: this._headers,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: getCookie('accessToken'),
+      },
       method: "POST",
     })
       .then(this._checkResponse)
@@ -70,7 +73,8 @@ class Api {
       .then(this._checkResponse)
   }
 
-  refreshToken(token) {
+  refreshToken() {
+    const token = getCookie('refreshToken');
     return fetch(`${this._baseUrl}/api/auth/token`, {
       body: JSON.stringify({ token }),
       headers: this._headers,
@@ -79,7 +83,8 @@ class Api {
       .then(this._checkResponse)
   }
 
-  logoutUser(token) {
+  logoutUser() {
+    const token = getCookie('refreshToken');
     return fetch(`${this._baseUrl}/api/auth/logout`, {
       body: JSON.stringify({ token }),
       headers: this._headers,
@@ -112,7 +117,6 @@ class Api {
     })
       .then(this._checkResponse)
   }
-
 
 }
 

@@ -1,34 +1,31 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import { useDispatch, useSelector } from "react-redux";
-import { getUser } from '../../services/actions/authorization';
+import { useSelector } from "react-redux";
 import { useState } from 'react';
 
 
 export function ProtectedRoute({ children , path }) {
 
-  const dispatch = useDispatch();
   const { data } = useSelector(store => ({
     data: store.authorization
   }))
 
-  const [isUserLoaded, setUserLoaded] = useState(true);
+  const [isUserLoading, setUserLoading] = useState(true);
 
   React.useEffect(() => {
-    setUserLoaded(true);
-    dispatch(getUser);
+    setUserLoading(true);
   }, []);
 
   React.useEffect(() => {
     if (data.getUserRequest === true) {
-      setUserLoaded(true)
+      setUserLoading(true)
     }
     if (data.getUserRequest === false) {
-      setUserLoaded(false)
+      setUserLoading(false)
     }
   }, [data])
 
-  if (isUserLoaded) {
+  if (isUserLoading) {
     return null;
   }
 

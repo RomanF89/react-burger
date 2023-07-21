@@ -2,34 +2,32 @@ import AppHeader from "../components/AppHeader/AppHeader";
 import styles from './loginPage.module.css';
 import { Input, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import { loginUser, loginUserSuccess, saveLoginError } from "../services/actions/authorization";
-import { api } from "../utils/Api";
+import { loginUser } from "../services/actions/authorization";
 
 
 export function LoginPage() {
 
-
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const redirectLink = history.location.state ? history.location.state.path : '/' ;
+  const { auth } = useSelector(store => ({
+    auth: store.authorization
+  }))
+
+  const redirectLink = history.location.state ? history.location.state.path : '/';
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+
   const loginClick = (e) => {
     e.preventDefault();
-    dispatch(loginUser());
-    api.loginUser(email, password)
-      .then((res) => {
-        dispatch(loginUserSuccess(res));
-        history.push(redirectLink);
-      })
-      .catch((err) => {
-        dispatch(saveLoginError(err))
-      })
+    dispatch(loginUser(email, password));
+    if (auth.currentUser) {
+      history.push(redirectLink);
+    }
   }
 
   const onChangeValues = (e) => {
@@ -39,8 +37,6 @@ export function LoginPage() {
       setEmail(e.target.value)
     }
   }
-
-
 
   return (
     <>

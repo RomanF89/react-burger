@@ -20,8 +20,6 @@ const initialAuthState = {
   request: false,
   requestError: false,
   currentUser: null,
-  accessToken: null,
-  refreshToken: null,
   prevUserState: null,
   getUserError: false,
   getUserRequest: false,
@@ -38,8 +36,6 @@ export const authorizationReducer = (state = initialAuthState, action) => {
         ...state,
         request: false,
         currentUser: action.data.user,
-        accessToken: action.data.accessToken,
-        refreshToken: action.data.refreshToken,
       }
     }
     case LOGIN_USER: {
@@ -50,8 +46,6 @@ export const authorizationReducer = (state = initialAuthState, action) => {
         ...state,
         request: false,
         currentUser: action.data.user,
-        accessToken: action.data.accessToken,
-        refreshToken: action.data.refreshToken,
       }
     }
     case LOGOUT_USER: {
@@ -62,8 +56,6 @@ export const authorizationReducer = (state = initialAuthState, action) => {
         ...state,
         request: false,
         currentUser: null,
-        accessToken: null,
-        refreshToken: null,
       }
     }
     case REFRESH_TOKEN: {
@@ -75,8 +67,6 @@ export const authorizationReducer = (state = initialAuthState, action) => {
         request: false,
         requestError: false,
         currentUser: null,
-        accessToken: action.token,
-        refreshToken: action.refreshToken,
       }
     }
     case GET_USER: {

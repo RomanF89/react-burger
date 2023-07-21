@@ -19,9 +19,6 @@ export const UPDATE_USER_SUCCESS = "UPDATE_USER_SUCCESS";
 export const UPDATE_USER_ERROR = "UPDATE_USER_ERROR";
 export const SAVE_AUTH_ERROR = "SAVE_AUTH_ERROR";
 
-const refreshedToken = getCookie('refreshToken');
-const accessToken = getCookie('accessToken');
-
 
 export const registrationUser = (email, password, name) => {
   return function (dispatch) {
@@ -30,6 +27,8 @@ export const registrationUser = (email, password, name) => {
     })
     api.registerUser(email, password, name)
       .then((res) => {
+        document.cookie = `refreshToken=${res.refreshToken}; maxAge=3600`;
+        document.cookie = `accessToken=${res.accessToken}; maxAge=1200`;
         dispatch({
           type: REGISTER_USER_SUCCESS,
           data: res,
@@ -44,38 +43,37 @@ export const registrationUser = (email, password, name) => {
   }
 }
 
-export const loginUser = () => {
+
+export const loginUser = (email, password) => {
   return function (dispatch) {
     dispatch({
       type: LOGIN_USER,
     })
+    api.loginUser(email, password)
+      .then((res) => {
+        document.cookie = `refreshToken=${res.refreshToken}; maxAge=3600`;
+        document.cookie = `accessToken=${res.accessToken}; maxAge=1200`;
+        dispatch({
+          type: LOGIN_USER_SUCCESS,
+          data: res,
+        })
+      })
+      .catch((err) => {
+        dispatch({
+          type: SAVE_AUTH_ERROR,
+          error: err,
+        })
+      })
   }
 }
 
-export const loginUserSuccess = (data) => {
-  return function (dispatch) {
-    dispatch({
-      type: LOGIN_USER_SUCCESS,
-      data: data,
-    })
-  }
-}
 
-export const saveLoginError = (err) => {
-  return function (dispatch) {
-    dispatch({
-      type: SAVE_AUTH_ERROR,
-      error: err,
-    })
-  }
-}
-
-export const refreshToken = (token, funk) => {
+export const refreshToken = (funk) => {
   return function (dispatch) {
     dispatch({
       type: REFRESH_TOKEN,
     })
-    api.refreshToken(token)
+    api.refreshToken()
       .then((res) => {
         document.cookie = `refreshToken=${res.refreshToken}; maxAge=3600`;
         document.cookie = `accessToken=${res.accessToken}; maxAge=1200`;
@@ -85,12 +83,9 @@ export const refreshToken = (token, funk) => {
         if (funk) { dispatch(funk) }
         dispatch({
           type: REFRESH_TOKEN_SUCCES,
-          token: res.accessToken,
-          refreshToken: res.refreshToken,
         });
       })
       .catch((err) => {
-        console.log('ошибка обновления токена')
         dispatch({
           type: SAVE_AUTH_ERROR,
           error: err,
@@ -99,12 +94,12 @@ export const refreshToken = (token, funk) => {
   }
 }
 
-export const logoutUser = (token) => {
+export const logoutUser = () => {
   return function (dispatch) {
     dispatch({
       type: LOGOUT_USER,
     })
-    api.logoutUser(token)
+    api.logoutUser()
       .then((res) => {
         if (res.success === true) {
           deleteCookie('refreshToken');
@@ -112,11 +107,9 @@ export const logoutUser = (token) => {
           dispatch({
             type: LOGOUT_USER_SUCCESS,
           })
-          console.log(res.message)
         }
       })
       .catch((err) => {
-        console.log(err)
         dispatch({
           type: SAVE_AUTH_ERROR,
           error: err,
@@ -125,12 +118,12 @@ export const logoutUser = (token) => {
   }
 }
 
-export const getUser = (accessToken) => {
+export const getUser = () => {
   return function (dispatch) {
     dispatch({
       type: GET_USER,
     })
-    api.getUser(accessToken)
+    api.getUser()
       .then((res) => {
         dispatch({
           type: GET_USER_SUCCESS,
@@ -146,21 +139,19 @@ export const getUser = (accessToken) => {
   }
 }
 
-export const updateUser = (email, name, accessToken) => {
+export const updateUser = (email, name) => {
   return function (dispatch) {
     dispatch({
       type: UPDATE_USER,
     })
-    api.updateUser(email, name, accessToken)
+    api.updateUser(email, name)
       .then((res) => {
-        console.log(res)
         dispatch({
           type: UPDATE_USER_SUCCESS,
           user: res.user,
         })
       })
       .catch((err) => {
-        console.log(err);
         dispatch({
           type: UPDATE_USER_ERROR,
           error: err,

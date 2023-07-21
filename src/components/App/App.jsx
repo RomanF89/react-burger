@@ -15,7 +15,6 @@ import { RegisterPage } from '../../pages/registerPage';
 import { ForgotPasswordPage } from '../../pages/forgotPassword';
 import { ResetPasswordPage } from '../../pages/resetPassword';
 import { ProfilePage } from '../../pages/profile';
-import { getCookie } from '../../utils/getCookie';
 import { ProtectedRoute } from '../ProtectedRoute/ProtectedRoute';
 import { ProtectedRouteAuthorized } from '../ProtectedRouteAutorized/ProtectedRouteAuthorized';
 import Modal from '../Modal/Modal';
@@ -31,7 +30,7 @@ function App() {
   }));
 
   const location = useLocation();
-  const modal = location.state && location.state.modal;
+  const modal = location.state?.modal;
 
 
   React.useEffect(() => {
@@ -40,24 +39,12 @@ function App() {
 
 
   React.useEffect(() => {
-    if (auth.refreshToken) {
-      document.cookie = `refreshToken=${auth.refreshToken}; maxAge=3600`;
-    }
-    if (auth.accessToken) {
-      document.cookie = `accessToken=${auth.accessToken}; maxAge=1200`;
-    }
-  }, [auth.refreshToken, auth.accessToken])
-
-
-
-  React.useEffect(() => {
     dispatch(getIngredients());
   }, []);
 
   React.useEffect(() => {
     if (auth.getUserError === 'Ошибка 403') {
-      const refreshedToken = getCookie('refreshToken');
-      dispatch(refreshToken(refreshedToken, getUser()));
+      dispatch(refreshToken( getUser()));
     }
   }, [auth.getUserError]);
 
@@ -68,7 +55,7 @@ function App() {
       <Switch location={location || modal}>
 
         <Route exact path="/">
-          <AppHeader></AppHeader>
+          <AppHeader/>
           {data.length &&
             <Main>
               <DndProvider backend={HTML5Backend}>
@@ -80,23 +67,23 @@ function App() {
         </Route>
 
         <ProtectedRouteAuthorized exact path={"/login"}>
-          <LoginPage></LoginPage>
+          <LoginPage/>
         </ProtectedRouteAuthorized>
 
         <ProtectedRouteAuthorized exact path={"/registration"}>
-          <RegisterPage></RegisterPage>
+          <RegisterPage/>
         </ProtectedRouteAuthorized>
 
         <ProtectedRouteAuthorized exact path={"/forgot-password"}>
-          <ForgotPasswordPage></ForgotPasswordPage>
+          <ForgotPasswordPage/>
         </ProtectedRouteAuthorized>
 
         <ProtectedRouteAuthorized exact path={"/reset-password"}>
-          <ResetPasswordPage></ResetPasswordPage>
+          <ResetPasswordPage/>
         </ProtectedRouteAuthorized>
 
         <ProtectedRoute exact path={"/profile"} >
-          <ProfilePage></ProfilePage>
+          <ProfilePage/>
         </ProtectedRoute>
 
         {!modal && data.length && (
