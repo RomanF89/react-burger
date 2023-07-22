@@ -1,29 +1,33 @@
 import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './AppHeader.module.css';
+import { NavLink, useLocation } from 'react-router-dom';
 
 function AppHeader() {
+
+  const location = useLocation();
+
   return (
     <header className={styles.header}>
       <div className={styles.navigation} >
         <div className={styles.order_navigation}>
-          <a href={'#'} className={styles.link}>
+          <NavLink to={'/'} className={ location.pathname === '/' ? styles.link_active : styles.link}>
             <BurgerIcon></BurgerIcon>
             <p className={styles.icon_caption}>Конструктор</p>
-          </a>
-          <a href={'#'} className={styles.link_active}>
+          </NavLink>
+          <NavLink to={'/orders'} activeClassName={styles.link_active} className={styles.link}>
             <ListIcon type="secondary"></ListIcon>
             <p className={styles.icon_caption}>Лента заказов</p>
-          </a>
+          </NavLink>
 
         </div>
         <div className={styles.logo} alt='логотип'>
           <Logo></Logo>
         </div>
         <div className={styles.profile_navigation}>
-          <a href={'#'} className={styles.profile_link}>
+          <NavLink to={'/profile'} activeClassName={styles.link_active} className={styles.link}>
             <ProfileIcon type="secondary"></ProfileIcon>
             <p className={styles.icon_caption}>Личный кабинет</p>
-          </a>
+          </NavLink>
         </div>
       </div>
     </header>

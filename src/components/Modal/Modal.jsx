@@ -5,9 +5,9 @@ import { burgerDataPropTypes } from '../../types/types';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import ReactDOM from 'react-dom';
 import ModalOverlay from '../ModalOverlay/ModalOverlay';
-import { deleteIngredientDetails } from '../../services/actions/ingredientDetails';
 import { deleteOrder } from '../../services/actions/orderDetails';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 
 const modalRoot = document.querySelector('#modal_container')
@@ -15,10 +15,11 @@ const modalRoot = document.querySelector('#modal_container')
 
 function Modal({ children }) {
   const dispatch = useDispatch();
+  const history = useHistory()
 
   function handleModalClose() {
     dispatch(deleteOrder());
-    dispatch(deleteIngredientDetails());
+    history.push("/");
   }
 
   const hanldleEscClose = (e) => {

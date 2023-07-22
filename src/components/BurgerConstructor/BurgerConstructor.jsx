@@ -1,26 +1,27 @@
 import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import React, { useMemo } from 'react';
-import PropTypes from 'prop-types';
 import styles from './BurgerConstructor.module.css';
-import { burgerDataPropTypes } from '../../types/types';
 import { api } from '../../utils/Api';
 import { useSelector, useDispatch } from 'react-redux';
-import { getIngredientDetails } from '../../services/actions/ingredientDetails';
 import { getOrder, getOrderSuccess, saveOrderError } from '../../services/actions/orderDetails';
 import { dropIngredients, deleteIngredient } from '../../services/actions/burgerConstructor';
 import { useDrop } from 'react-dnd';
 import { BurgerConstructorElement } from '../BurgerConstructorElement/BurgerConstructorElement';
+import { useHistory } from 'react-router-dom';
 
 
 function BurgerConstructor() {
-  const { data } = useSelector(store => ({
-    data: store.constructorIngredients.constructorIngredients
+  const { data, auth } = useSelector(store => ({
+    data: store.constructorIngredients.constructorIngredients,
+    auth: store.authorization
+
   }));
 
   const filteredItemsBun = useMemo(() => data.filter((filteredItem) => filteredItem.type === 'bun'), [data]);
   const otherBurgerItems = useMemo(() => data.filter((filteredItem) => filteredItem.type === 'main' || filteredItem.type === 'sauce'), [data]);
 
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const [, dropRef] = useDrop({
     accept: 'card',
@@ -30,6 +31,11 @@ function BurgerConstructor() {
   });
 
   function orderClick() {
+
+    if (!auth.currentUser) {
+      return history.push('/login') //Переадрисация неавторизованного пользователя
+    }
+
     const getBurgersId = () => { //Сортировка id бургеров, чтоб булки были вначале и вконце массива
       const ingredientsFromData = data.reduce((prevItem, nextItem) => {
         return [...prevItem, nextItem._id];
@@ -50,7 +56,7 @@ function BurgerConstructor() {
   }
 
   function handleClick(item) {
-    dispatch(getIngredientDetails(item));
+    history.replace(`/ingredients/${item._id}`, {modal: true})
   }
 
   function handleDeleteIngredient(ingredient) {
@@ -126,10 +132,5 @@ function BurgerConstructor() {
   )
 }
 
-BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(burgerDataPropTypes),
-  handleIngredientClick: PropTypes.func,
-  handleOrderClick: PropTypes.func,
-}
 
 export default BurgerConstructor;

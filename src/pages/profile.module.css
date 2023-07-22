@@ -1,0 +1,44 @@
+.profile {
+  display: flex;
+  flex-direction: row;
+  margin: 120px  0 0 0;
+}
+
+.navigation_panel {
+  display: flex;
+  flex-direction: column;
+  margin: 0 60px 0 340px;
+}
+
+.navigation_link {
+  color: rgba(133, 133, 173, 1);
+  text-decoration: none;
+  font-size: 24px;
+  line-height: 30px;
+  font-weight: 700;
+  height: 64px;
+}
+
+.navigation_link_active {
+  color: rgba(242, 242, 243, 1);
+}
+
+.profile_inputs {
+
+}
+
+.profile_input {
+  margin: 0 0 24px 0;
+}
+
+.profile_input:last-child {
+  margin: 0;
+}
+
+.buttons_area {
+  display: flex;
+  justify-content: flex-end;
+}
+
+
+
