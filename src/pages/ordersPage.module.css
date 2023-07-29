@@ -1,0 +1,24 @@
+.orders_page {
+  display: flex;
+  flex-direction: row;
+}
+
+.card_area {
+  display: flex;
+  flex-direction: column;
+  width: 872px;
+  height: 916px;
+  margin: 36px 0 0 40px;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+}
+
+.card_area::-webkit-scrollbar {
+  width: 8px;
+  background: rgba(47, 47, 55, 1);
+}
+
+.card_area::-webkit-scrollbar-thumb {
+  width: 8px;
+  background: rgba(133, 133, 173, 1);
+}

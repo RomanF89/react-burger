@@ -9,7 +9,7 @@ import { getUser, refreshToken } from '../../services/actions/authorization';
 import { useSelector, useDispatch } from 'react-redux';
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { Switch, Route, useLocation} from 'react-router-dom';
+import { Switch, Route, useLocation } from 'react-router-dom';
 import { LoginPage } from '../../pages/loginPage';
 import { RegisterPage } from '../../pages/registerPage';
 import { ForgotPasswordPage } from '../../pages/forgotPassword';
@@ -20,23 +20,29 @@ import { ProtectedRouteAuthorized } from '../ProtectedRouteAutorized/ProtectedRo
 import Modal from '../Modal/Modal';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import IngredientPage from '../../pages/ingredientPage';
+import { FeedPage } from '../../pages/feedPage';
+import { OrderInfo } from '../OrderInfo/OrderInfo';
+import { OrdersPage } from '../../pages/ordersPage';
+import { OrderInfoPage } from '../../pages/orderInfoPage';
+
+export const WEBSOCKET_SERVER_URL = "wss://norma.nomoreparties.space/orders/all";
+
 
 function App() {
-  const dispatch = useDispatch();
 
+  const dispatch = useDispatch();
   const { data, auth } = useSelector(store => ({
     data: store.ingredients.ingredientsFromRequest,
-    auth: store.authorization
+    auth: store.authorization,
+    feedData: store.feedTable,
   }));
 
   const location = useLocation();
   const modal = location.state?.modal;
 
-
   React.useEffect(() => {
     dispatch(getUser())
   }, [])
-
 
   React.useEffect(() => {
     dispatch(getIngredients());
@@ -44,7 +50,7 @@ function App() {
 
   React.useEffect(() => {
     if (auth.getUserError === 'Ошибка 403') {
-      dispatch(refreshToken( getUser()));
+      dispatch(refreshToken(getUser()));
     }
   }, [auth.getUserError]);
 
@@ -55,36 +61,47 @@ function App() {
       <Switch location={location || modal}>
 
         <Route exact path="/">
-          <AppHeader/>
+          <AppHeader />
           {data.length &&
             <Main>
               <DndProvider backend={HTML5Backend}>
                 <BurgerIngredients data={data} />
-                <BurgerConstructor/>
+                <BurgerConstructor />
               </DndProvider>
             </Main>
           }
         </Route>
 
         <ProtectedRouteAuthorized exact path={"/login"}>
-          <LoginPage/>
+          <LoginPage />
         </ProtectedRouteAuthorized>
 
         <ProtectedRouteAuthorized exact path={"/registration"}>
-          <RegisterPage/>
+          <RegisterPage />
         </ProtectedRouteAuthorized>
 
         <ProtectedRouteAuthorized exact path={"/forgot-password"}>
-          <ForgotPasswordPage/>
+          <ForgotPasswordPage />
         </ProtectedRouteAuthorized>
 
         <ProtectedRouteAuthorized exact path={"/reset-password"}>
-          <ResetPasswordPage/>
+          <ResetPasswordPage />
         </ProtectedRouteAuthorized>
 
-        <ProtectedRoute exact path={"/profile"} >
-          <ProfilePage/>
+        <ProtectedRoute exact path={"/profile/orders"} >
+          <AppHeader />
+          <OrdersPage />
         </ProtectedRoute>
+
+        <ProtectedRoute exact path={"/profile"} >
+          <AppHeader />
+          <ProfilePage />
+        </ProtectedRoute>
+
+        <Route exact path={"/feed"}>
+          <AppHeader />
+          <FeedPage />
+        </Route>
 
         {!modal && data.length && (
           <Route path="/ingredients/:id">
@@ -92,8 +109,42 @@ function App() {
           </Route>)
         }
 
+        {!modal && (
+          <Route exact path="/feed/:number">
+            <AppHeader />
+            <OrderInfoPage />
+          </Route>)
+        }
+
+        {!modal && (
+          <Route exact path="/profile/orders/:number">
+            <AppHeader />
+            <OrderInfoPage />
+          </Route>)
+        }
+
       </Switch>
 
+
+      {modal && (
+        <Switch>
+          <Route path="/feed/:number">
+            <Modal>
+              <OrderInfo />
+            </Modal>
+          </Route>
+        </Switch>
+      )}
+
+      {modal && (
+        <Switch>
+          <Route path="/profile/orders/:number">
+            <Modal>
+              <OrderInfo />
+            </Modal>
+          </Route>
+        </Switch>
+      )}
 
       {modal && data.length && (
         <Switch>

@@ -22,3 +22,13 @@ export const burgerDataPropTypes = PropTypes.shape({
   }),
 })
 
+export const feedDataPropsTypes = PropTypes.shape({
+  createdAt: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  _id: PropTypes.string.isRequired,
+  number: PropTypes.number.isRequired,
+  updatedAt: PropTypes.string.isRequired,
+  status: PropTypes.string.isRequired,
+  ingredients: PropTypes.array.isRequired,
+})
+

@@ -15,12 +15,10 @@ export function LoginPage() {
   const { auth } = useSelector(store => ({
     auth: store.authorization
   }))
-
   const redirectLink = history.location.state ? history.location.state.path : '/';
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
 
   const loginClick = (e) => {
     e.preventDefault();

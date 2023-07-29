@@ -1,5 +1,5 @@
 import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import styles from './BurgerConstructor.module.css';
 import { api } from '../../utils/Api';
 import { useSelector, useDispatch } from 'react-redux';
@@ -8,14 +8,17 @@ import { dropIngredients, deleteIngredient } from '../../services/actions/burger
 import { useDrop } from 'react-dnd';
 import { BurgerConstructorElement } from '../BurgerConstructorElement/BurgerConstructorElement';
 import { useHistory } from 'react-router-dom';
+import Modal from '../Modal/Modal';
+import { OrderLoader } from '../OrderLoader/OrderLoader';
 
 
 function BurgerConstructor() {
   const { data, auth } = useSelector(store => ({
     data: store.constructorIngredients.constructorIngredients,
     auth: store.authorization
-
   }));
+
+  const [modal, setModal] = useState(false);
 
   const filteredItemsBun = useMemo(() => data.filter((filteredItem) => filteredItem.type === 'bun'), [data]);
   const otherBurgerItems = useMemo(() => data.filter((filteredItem) => filteredItem.type === 'main' || filteredItem.type === 'sauce'), [data]);
@@ -44,19 +47,24 @@ function BurgerConstructor() {
       return [...ingredientsFromData, filteredItem]
     }
     const burgersId = getBurgersId();
+    setModal(true);
 
     dispatch(getOrder())
     api.createOrder(burgersId)
       .then(orderData => {
-        dispatch(getOrderSuccess(orderData))
+        dispatch(getOrderSuccess(orderData));
       })
       .catch((err) => {
         dispatch(saveOrderError(err))
       })
+      .finally(() => {
+        setModal(false)
+      })
   }
 
+
   function handleClick(item) {
-    history.replace(`/ingredients/${item._id}`, {modal: true})
+    history.replace(`/ingredients/${item._id}`, { modal: true })
   }
 
   function handleDeleteIngredient(ingredient) {
@@ -74,6 +82,9 @@ function BurgerConstructor() {
 
   return (
     <section className={styles.burger_constructor}>
+      {modal && (<Modal>
+        <OrderLoader />
+      </Modal>)}
       <div className={styles.constructor_ingredients} ref={dropRef}>
 
         { //Рендер верхней Булки

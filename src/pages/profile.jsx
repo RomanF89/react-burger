@@ -1,14 +1,12 @@
-import { Link, NavLink, useHistory } from "react-router-dom";
-import AppHeader from "../components/AppHeader/AppHeader";
 import styles from "./profile.module.css";
 import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState, useCallback } from "react";
-import { updateUser, refreshToken, logoutUser } from "../services/actions/authorization";
+import { useEffect, useState } from "react";
+import { updateUser, refreshToken } from "../services/actions/authorization";
+import { ProfileNavigation } from "../components/ProfileNavigation/ProfileNavigation";
 
 export function ProfilePage() {
 
-  const history = useHistory();
   const dispatch = useDispatch();
 
   const { data } = useSelector(store => ({
@@ -23,7 +21,6 @@ export function ProfilePage() {
   const undoChanges = (e) => {
     e.preventDefault();
     dispatch(updateUser(data.prevUserState.email, data.prevUserState.name));
-
   }
 
   const [name, setName] = useState('');
@@ -54,25 +51,9 @@ export function ProfilePage() {
     }
   }, [data.updateUserError]);
 
-  const logoutClick = useCallback((e) => {
-    e.preventDefault();
-    dispatch(logoutUser());
-    if (data.currentUser === null) {
-      history.push('/login');
-    }
-
-  }, [dispatch, history, data])
-
-
   return (
-    <>
-      <AppHeader></AppHeader>
       <section className={styles.profile}>
-        <nav className={styles.navigation_panel}>
-          <NavLink to={'/profile'} className={styles.navigation_link} activeClassName={styles.navigation_link_active}>Профиль</NavLink>
-          <NavLink to={'/profile/orders'} className={styles.navigation_link}>История заказов</NavLink>
-          <Link onClick={logoutClick} to={'#'} className={styles.navigation_link}>Выход</Link>
-        </nav>
+        <ProfileNavigation page_style={"profile_page"}/>
         <form className={styles.profile_inputs} onSubmit={onUpdateUser}>
           <Input type="text" name="name" placeholder="Имя" value={name} onChange={onChangeValues} extraClass={styles.profile_input} icon={'EditIcon'}></Input>
           <Input type="email" name="email" placeholder="Логин" value={email} onChange={onChangeValues} extraClass={styles.profile_input} icon={'EditIcon'}></Input>
@@ -83,6 +64,5 @@ export function ProfilePage() {
           </div>
         </form>
       </section>
-    </>
   )
 }
