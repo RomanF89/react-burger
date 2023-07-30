@@ -9,9 +9,8 @@ export function ProfilePage() {
 
   const dispatch = useDispatch();
 
-  const { data } = useSelector(store => ({
-    data: store.authorization
-  }))
+  const getAuth = (store) => (store.authorization);
+  const data = useSelector(getAuth);
 
   const onUpdateUser = (e) => {
     e.preventDefault();
@@ -47,7 +46,6 @@ export function ProfilePage() {
   useEffect(() => {
     if (data.updateUserError === 'Ошибка 403') {
       dispatch(refreshToken(updateUser(email, name))); // При ошибке обновления данные в полях сбросятся к актуальным значениям.
-
     }
   }, [data.updateUserError]);
 

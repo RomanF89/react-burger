@@ -12,9 +12,9 @@ export function LoginPage() {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const { auth } = useSelector(store => ({
-    auth: store.authorization
-  }))
+  const getAuth = (store) => (store.authorization);
+  const auth = useSelector(getAuth);
+
   const redirectLink = history.location.state ? history.location.state.path : '/';
 
   const [email, setEmail] = useState('');

@@ -13,10 +13,11 @@ import { OrderLoader } from '../OrderLoader/OrderLoader';
 
 
 function BurgerConstructor() {
-  const { data, auth } = useSelector(store => ({
-    data: store.constructorIngredients.constructorIngredients,
-    auth: store.authorization
-  }));
+
+  const getData = (store) => (store.constructorIngredients.constructorIngredients);
+  const getAuth = (store) => (store.authorization);
+  const data = useSelector(getData);
+  const auth = useSelector(getAuth);
 
   const [modal, setModal] = useState(false);
 

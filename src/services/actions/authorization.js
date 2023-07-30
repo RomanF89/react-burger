@@ -1,7 +1,5 @@
 import { api } from "../../utils/Api";
-import { getCookie } from '../../utils/getCookie';
 import { deleteCookie } from "../../utils/deleteCookie";
-
 
 export const REGISTER_USER = "REGISTER_USER";
 export const LOGIN_USER = "LOGIN_USER";

@@ -9,9 +9,10 @@ export function OrderInfo() {
 
   const { number } = useParams();
   const [currentOrder, setCurrentOder] = useState({});
-  const { data } = useSelector(store => ({
-    data: store.ingredients.ingredientsFromRequest,
-  }));
+  const [orderError, setOrderError] = useState('')
+
+  const getData = (store) => (store.ingredients.ingredientsFromRequest);
+  const data = useSelector(getData);
 
   //Поиск текущего заказа по номеру
   const order = () => {
@@ -19,7 +20,7 @@ export function OrderInfo() {
       .then((res) => {
         setCurrentOder(res.orders[0]);
       })
-      .catch((err) => console.log(err))
+      .catch((err) => setOrderError(err));
   }
 
   useEffect(() => {
@@ -41,7 +42,19 @@ export function OrderInfo() {
   const dateOptions = { weekday: 'long', hour: 'numeric', minute: 'numeric', timeZone: 'UTC', timeZoneName: 'short' };
   const date = new Date(currentOrder.createdAt).toLocaleDateString('ru-RU', dateOptions);
 
+  currentIngredients.length && currentIngredients.forEach((ingredient) => {
+    ingredient.count = 0;
+  for (let item of currentIngredients) {
+    if(ingredient.name === item.name) {
+      ingredient.count = ingredient.count + 1;
+    }
+  }
+  })
+
+  const uniqueIngredients = currentIngredients.filter((x, i) => currentIngredients.indexOf(x) === i);
+
   return (
+    orderError ? <h2 className={styles.order_error}>{orderError}</h2> :
     currentOrder.ingredients && <section className={styles.order_info}>
       <h3 className={styles.order_number}>{currentOrder.number}</h3>
       <h2 className={styles.order_name}>{currentOrder.name}</h2>
@@ -49,13 +62,13 @@ export function OrderInfo() {
       <p className={styles.order_consist}>Состав</p>
       <div className={styles.order_consist_area}>
         {
-          currentIngredients.map((item) => <article className={styles.order_ingredient} key={item._id + Math.random()}>
+          uniqueIngredients.map((item) => <article className={styles.order_ingredient} key={item._id + Math.random()}>
             <div className={styles.ingredient_area}>
               <img className={styles.ingredient_image} src={item.image} alt={'ingredient_image'}></img>
               <p className={styles.ingredient_name}>{item.name}</p>
             </div>
             <div className={styles.price_area}>
-              <p className={styles.price}>{item.price}</p>
+              <p className={styles.price}>{`${item.count} x ${item.price}`}</p>
               <CurrencyIcon type='primary'></CurrencyIcon>
             </div>
           </article>)
@@ -69,5 +82,6 @@ export function OrderInfo() {
         </div>
       </div>
     </section>
+
   )
 }

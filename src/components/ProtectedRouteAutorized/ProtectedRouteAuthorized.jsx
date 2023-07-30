@@ -5,9 +5,8 @@ import { useState } from 'react';
 
 export function ProtectedRouteAuthorized({ children , path}) {
 
-  const { data } = useSelector(store => ({
-    data: store.authorization
-  }))
+  const getAuth = (store) => (store.authorization);
+  const data = useSelector(getAuth);
 
   const [isUserLoaded, setUserLoaded] = useState(true);
 

@@ -8,9 +8,9 @@ import { feedDataPropsTypes } from '../../types/types';
 export function FeedCard({ cardStyle, cardClick, item }) {
 
   const isOrdersPage = cardStyle === "orders_page" ? true : null;
-  const { data } = useSelector(store => ({
-    data: store.ingredients.ingredientsFromRequest,
-  }));
+
+  const getData = (store) => (store.ingredients.ingredientsFromRequest);
+  const data = useSelector(getData);
 
   //Проверка каждого ингердиента и создание массива
   let currentIngredients = [];
@@ -41,7 +41,6 @@ export function FeedCard({ cardStyle, cardClick, item }) {
   } else if (item.status === 'created') {
     status = 'Создан';
   }
-
 
   return (
     <article className={styles.card} onClick={() => cardClick(item)}>

@@ -13,9 +13,8 @@ export function ProfileNavigation({ page_style }) {
   const isOrdersPage = page_style === 'orders_page' ? true : false;
   const isProfilePage = page_style === 'profile_page' ? true : false;
 
-  const { data } = useSelector(store => ({
-    data: store.authorization
-  }))
+  const getAuth = (store) => store.authorization;
+  const data = useSelector(getAuth)
 
   const logoutClick = useCallback((e) => {
     e.preventDefault();

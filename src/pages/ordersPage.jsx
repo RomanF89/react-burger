@@ -21,9 +21,8 @@ export function OrdersPage() {
   const connect = () => dispatch(ordersConnect(WEBSOCKET_PROFILE_SERVER_URL));
   const disconnect = () => dispatch(ordersDisconnect());
 
-  const { ordersData } = useSelector(store => ({
-    ordersData: store.ordersTable,
-  }));
+  const getData = (store) => (store.ordersTable);
+  const ordersData = useSelector(getData);
 
   useEffect(() => {
     connect();

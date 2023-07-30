@@ -31,11 +31,12 @@ export const WEBSOCKET_SERVER_URL = "wss://norma.nomoreparties.space/orders/all"
 function App() {
 
   const dispatch = useDispatch();
-  const { data, auth } = useSelector(store => ({
-    data: store.ingredients.ingredientsFromRequest,
-    auth: store.authorization,
-    feedData: store.feedTable,
-  }));
+
+  const getData = (store) => (store.ingredients.ingredientsFromRequest);
+  const getAuth = (store) => (store.authorization);
+  const data = useSelector(getData);
+  const auth = useSelector(getAuth);
+
 
   const location = useLocation();
   const modal = location.state?.modal;
@@ -53,7 +54,6 @@ function App() {
       dispatch(refreshToken(getUser()));
     }
   }, [auth.getUserError]);
-
 
 
   return (
@@ -125,36 +125,31 @@ function App() {
 
       </Switch>
 
+      <Switch>
 
-      {modal && (
-        <Switch>
+        {modal && (
           <Route path="/feed/:number">
             <Modal>
               <OrderInfo />
             </Modal>
           </Route>
-        </Switch>
-      )}
-
-      {modal && (
-        <Switch>
+        )}
+        {modal && (
           <Route path="/profile/orders/:number">
             <Modal>
               <OrderInfo />
             </Modal>
           </Route>
-        </Switch>
-      )}
-
-      {modal && data.length && (
-        <Switch>
+        )}
+        {modal && data.length && (
           <Route path="/ingredients/:id">
             <Modal>
               <IngredientDetails data={data} />
             </Modal>
           </Route>
-        </Switch>
-      )}
+        )}
+
+      </Switch>
 
     </div>
   );

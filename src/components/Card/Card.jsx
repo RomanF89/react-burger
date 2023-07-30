@@ -7,9 +7,9 @@ import { useSelector } from 'react-redux';
 import { useMemo } from 'react';
 
 function Card({ item, handleIngredientClick }) {
-  const { constructorData } = useSelector(store => ({
-    constructorData: store.constructorIngredients.constructorIngredients
-  }));
+
+  const getData = (store) => (store.constructorIngredients.constructorIngredients);
+  const constructorData = useSelector(getData);
 
   //Рассчет количества ингредиентов пернесенных в Контруктор
   const itemsCount = useMemo(() => constructorData.filter((card) => card._id === item._id).length, [constructorData, item]);

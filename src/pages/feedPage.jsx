@@ -19,10 +19,8 @@ export function FeedPage() {
 
   const connect = () => dispatch(feedConnect(WEBSOCKET_SERVER_URL));
   const disconnect = () => dispatch(feedDisconnect());
-
-  const { feedData } = useSelector(store => ({
-    feedData: store.feedTable,
-  }));
+  const getData = (store) => (store.feedTable);
+  const feedData = useSelector(getData);
 
   useEffect(() => {
     connect();

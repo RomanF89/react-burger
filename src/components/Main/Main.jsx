@@ -5,13 +5,11 @@ import OrderDetails from "../OrderDetails/OrderDetails";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 
 function Main(props) {
-  const { ingredientData } = useSelector(store => ({
-    ingredientData: store.ingredientDetails.currentIngredientDetails
-  }));
 
-  const { orderData } = useSelector(store => ({
-    orderData: store.orderDetails.currentOrder,
-  }))
+  const getData = (store) => (store.ingredientDetails.currentIngredientDetails);
+  const getOrder = (store) => (store.orderDetails.currentOrder)
+  const ingredientData  = useSelector(getData);
+  const orderData = useSelector(getOrder);
 
   return (
     <main className={styles.content}>
