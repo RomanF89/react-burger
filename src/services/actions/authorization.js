@@ -75,10 +75,11 @@ export const refreshToken = (funk) => {
       .then((res) => {
         document.cookie = `refreshToken=${res.refreshToken}; maxAge=3600`;
         document.cookie = `accessToken=${res.accessToken}; maxAge=1200`;
-        return res
       })
-      .then((res) => {
-        if (funk) { dispatch(funk) }
+      .then(() => {
+        if (funk) {
+          dispatch(funk)
+        }
         dispatch({
           type: REFRESH_TOKEN_SUCCES,
         });
@@ -129,6 +130,7 @@ export const getUser = () => {
         })
       })
       .catch((err) => {
+        console.log(err)
         dispatch({
           type: GET_USER_ERROR,
           error: err,

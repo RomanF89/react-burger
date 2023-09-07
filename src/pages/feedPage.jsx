@@ -7,7 +7,6 @@ import { useSelector } from 'react-redux';
 import { feedConnect, feedDisconnect } from '../services/actions/feed';
 import { useEffect } from 'react';
 
-
 export function FeedPage() {
 
   const history = useHistory();

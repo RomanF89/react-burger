@@ -41,6 +41,8 @@ function App() {
   const location = useLocation();
   const modal = location.state?.modal;
 
+  console.log('app')
+
   React.useEffect(() => {
     dispatch(getUser())
   }, [])
@@ -51,6 +53,7 @@ function App() {
 
   React.useEffect(() => {
     if (auth.getUserError === 'Ошибка 403') {
+      console.log('adadadadweqwe')
       dispatch(refreshToken(getUser()));
     }
   }, [auth.getUserError]);

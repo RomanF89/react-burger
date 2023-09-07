@@ -75,6 +75,8 @@ class Api {
 
   refreshToken() {
     const token = getCookie('refreshToken');
+    console.log(token)
+
     return fetch(`${this._baseUrl}/api/auth/token`, {
       body: JSON.stringify({ token }),
       headers: this._headers,
@@ -94,6 +96,7 @@ class Api {
   }
 
   getUser() {
+    console.log('getUser')
     const accessToken = getCookie('accessToken');
     return fetch(`${this._baseUrl}/api/auth/user`, {
       headers: {
