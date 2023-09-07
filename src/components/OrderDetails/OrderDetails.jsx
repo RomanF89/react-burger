@@ -6,16 +6,18 @@ import { useSelector } from 'react-redux';
 
 
 function OrderDetails() {
-  const { orderData}  = useSelector( store => ({
-    orderData: store.orderDetails.currentOrder,
-}))
+
+  const getOrder = (store) => (store.orderDetails.currentOrder);
+  const orderData = useSelector(getOrder);
+
+
   return (
     <section className={styles.order_details}>
-      <span className={styles.order_number}>{orderData.success ? orderData.order.number : '' }</span>
-      <h4 className={styles.order_identificator}>{ orderData.success ? 'Идентификатор Заказа' : 'Произошла ошибка'}</h4>
+      <span className={styles.order_number}>{orderData.success ? orderData.order.number : ''}</span>
+      <h4 className={styles.order_identificator}>{orderData.success ? 'Идентификатор Заказа' : 'Произошла ошибка'}</h4>
       <img className={styles.order_image} src={orderImagePath} alt={'Заказ принят'}></img>
-      <p className={styles.accept_message}>{ orderData.success ? 'Ваш заказ начали готовить' : ''} </p>
-      <p className={styles.wait_message}>{orderData.success? 'Дождитесь готовности на орбитальной станции' : ''}</p>
+      <p className={styles.accept_message}>{orderData.success ? 'Ваш заказ начали готовить' : ''} </p>
+      <p className={styles.wait_message}>{orderData.success ? 'Дождитесь готовности на орбитальной станции' : ''}</p>
     </section>
   )
 }

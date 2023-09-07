@@ -105,6 +105,16 @@ class Api {
       .then(this._checkResponse)
   }
 
+  getOrder(orderNumber) {
+    return fetch(`${this._baseUrl}/api/orders/${orderNumber}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: "GET",
+    })
+      .then(this._checkResponse)
+  }
+
   updateUser(email, name) {
     const accessToken = getCookie('accessToken');
     return fetch(`${this._baseUrl}/api/auth/user`, {
@@ -117,9 +127,7 @@ class Api {
     })
       .then(this._checkResponse)
   }
-
 }
-
 
 
 const api = new Api({

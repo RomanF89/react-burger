@@ -7,7 +7,7 @@ import ReactDOM from 'react-dom';
 import ModalOverlay from '../ModalOverlay/ModalOverlay';
 import { deleteOrder } from '../../services/actions/orderDetails';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 
 const modalRoot = document.querySelector('#modal_container')
@@ -15,9 +15,18 @@ const modalRoot = document.querySelector('#modal_container')
 
 function Modal({ children }) {
   const dispatch = useDispatch();
-  const history = useHistory()
+  const history = useHistory();
+  const location = useLocation();
+
 
   function handleModalClose() {
+    if (location.state?.page === 'feed') {
+      history.push("/feed");
+      return;
+    } else if ( location.state?.page === 'orders' ) {
+      history.push("/profile/orders");
+      return;
+    }
     dispatch(deleteOrder());
     history.push("/");
   }

@@ -14,7 +14,7 @@ function AppHeader() {
             <BurgerIcon></BurgerIcon>
             <p className={styles.icon_caption}>Конструктор</p>
           </NavLink>
-          <NavLink to={'/orders'} activeClassName={styles.link_active} className={styles.link}>
+          <NavLink to={'/feed'} activeClassName={styles.link_active} className={styles.link}>
             <ListIcon type="secondary"></ListIcon>
             <p className={styles.icon_caption}>Лента заказов</p>
           </NavLink>
