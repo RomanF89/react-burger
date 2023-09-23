@@ -1,5 +1,6 @@
 import { TFeedData } from "../../types/types";
 import { WebsocketStatus } from "../../utils/webSocketStatus";
+import { TOrderData } from "../actions/orderDetails";
 import {
   ORDERS_WS_CLOSE,
   ORDERS_WS_CONNECTING,

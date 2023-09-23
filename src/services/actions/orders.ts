@@ -43,11 +43,33 @@ export type TOrdersActions =
   | IOrderWsError;
 
 
-export const ordersConnect = (url: string) => ({
+export const ordersConnect = (url: string): IOrderConnectAction => ({
     type: ORDERS_CONNECT,
     payload: url,
 });
 
-export const ordersDisconnect = () => ({
+export const ordersDisconnect = (): IOrderDisconnectAction => ({
     type: ORDERS_DISCONNECT,
+});
+
+export const ordersConnecting = (): IOrderWsConnecting => ({
+  type: ORDERS_WS_CONNECTING,
+});
+
+export const ordersOpen = (): IOrderWsOpen => ({
+  type: ORDERS_WS_OPEN,
+});
+
+export const ordersClose = (): IOrderWsClose => ({
+  type: ORDERS_WS_CLOSE,
+});
+
+export const ordersMessage = (message: TFeedData): IOrderWsMessage => ({
+  type: ORDERS_WS_MESSAGE,
+  payload: message,
+});
+
+export const ordersError = (error: string): IOrderWsError => ({
+  type: ORDERS_WS_ERROR,
+  payload: error,
 });

@@ -75,7 +75,7 @@ export function deleteOrder() {
   };
 }
 
-export function saveOrderError(error: any) {
+export function saveOrderError(error: string) {
   return function(dispatch: AppDispatch) {
     dispatch({
       type: REQUEST_ERROR,

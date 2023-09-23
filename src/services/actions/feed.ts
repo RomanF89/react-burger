@@ -1,5 +1,4 @@
 import { TFeedData } from "../../types/types";
-
 export const FEED_CONNECT = 'FEED_CONNECT';
 export const FEED_DISCONNECT = 'FEED_DISCONNECT';
 export const FEED_WS_CONNECTING = 'FEED_WS_CONNECTING';
@@ -42,11 +41,39 @@ export type TFeedActions =
   | IFeedWsMessage
   | IFeedWsError
 
-export const feedConnect = (url: string) => ({
+export const feedConnect = (url: string): IFeedConnectAction => ({
   type: FEED_CONNECT,
   payload: url
 });
 
-export const feedDisconnect = () => ({
+export const feedDisconnect = (): IFeedDisconnectAction => ({
   type: FEED_DISCONNECT,
 });
+
+export const feedConnecting = () : IFeedWsConnecting => ({
+  type: FEED_WS_CONNECTING,
+});
+
+export const feedOpen = (): IFeedWsOpen => ({
+  type: FEED_WS_OPEN,
+});
+
+export const feedClose = (): IFeedWsClose => ({
+  type: FEED_WS_CLOSE,
+});
+
+export const feedMessage = (message: TFeedData): IFeedWsMessage => ({
+  type: FEED_WS_MESSAGE,
+  payload: message,
+});
+
+export const feedError = (error: string): IFeedWsError => ({
+  type: FEED_WS_ERROR,
+  payload: error,
+});
+
+
+
+
+
+

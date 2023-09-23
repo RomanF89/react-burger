@@ -42,11 +42,11 @@ export const BurgerConstructorElement: React.FC<TConstructorPropTypes> = ({ item
 
 
   function handleClick(item: TIngredient) {
-    ingredientClick(item)
+    ingredientClick(item);
   }
 
   function handleDeleteIngredient(item: TIngredient) {
-    handleDelete(item)
+    handleDelete(item);
   }
 
   return (
@@ -57,7 +57,7 @@ export const BurgerConstructorElement: React.FC<TConstructorPropTypes> = ({ item
             <DragIcon type={'secondary'} ></DragIcon>
           </div>
           <ConstructorElement
-            handleClose={(e: Event) => {
+            handleClose={(e: {stopPropagation: () => void; }) => {
               handleDeleteIngredient(item);
               e.stopPropagation();
             }}

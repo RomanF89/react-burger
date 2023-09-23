@@ -1,5 +1,6 @@
 import { WebsocketStatus } from "../../utils/webSocketStatus";
 import {
+  FEED_CONNECT,
   FEED_WS_CLOSE,
   FEED_WS_CONNECTING,
   FEED_WS_ERROR,

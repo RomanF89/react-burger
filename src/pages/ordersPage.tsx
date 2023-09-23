@@ -3,7 +3,7 @@ import { FeedCard } from "../components/FeedCard/FeedCard";
 import { ProfileNavigation } from "../components/ProfileNavigation/ProfileNavigation";
 import { useHistory } from "react-router-dom";
 import { ordersConnect, ordersDisconnect } from "../services/actions/orders";
-import { useDispatch } from "react-redux";
+import { useDispatch } from "../hooks";
 import { useSelector } from "../hooks";
 import { useEffect } from "react";
 import { getCookie } from "../utils/getCookie";

@@ -148,7 +148,7 @@ export const loginUser = (email: string, password: string) => {
   }
 }
 
-export const refreshToken = (func: any) => {
+export const refreshToken = (func: { (dispatch: AppDispatch): void; (dispatch: AppDispatch): void; }) => {
   return function (dispatch: AppDispatch) {
     dispatch({
       type: REFRESH_TOKEN,

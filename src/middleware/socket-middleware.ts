@@ -16,7 +16,7 @@ export const socketMiddleware = (wsActions: TSocketMiddleware) => {
   return (store: { dispatch: any; }) => {
       let socket: WebSocket | null = null;
 
-      return (next: (arg0: any) => void) => (action: { payload?: any; type?: string; }) => {
+      return (next: (arg0: any) => void) => (action: { payload: string; type?: string; }) => {
           const { dispatch } = store;
           const { type } = action;
           const {
