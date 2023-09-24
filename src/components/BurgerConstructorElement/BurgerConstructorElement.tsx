@@ -57,9 +57,8 @@ export const BurgerConstructorElement: React.FC<TConstructorPropTypes> = ({ item
             <DragIcon type={'secondary'} ></DragIcon>
           </div>
           <ConstructorElement
-            handleClose={(e: {stopPropagation: () => void; }) => {
+            handleClose={() => {
               handleDeleteIngredient(item);
-              e.stopPropagation();
             }}
             isLocked={false}
             text={item.name}
